@@ -154,5 +154,5 @@ $margin-s: 8px;
 }
 
 @function rem($px) {
-  @return $px/100 + "rem";
+  @return $px/100 + rem;
 }
