@@ -5,8 +5,6 @@ import Router from 'vue-router'
 import store from '../store'
 import Index from '@/views/Index' // 命名chunk，内部注释是必须的
 
-import Login from '@/views/Login/Index' // 同步chunk
-
 Vue.use(Router)
 
 const partRouter = {
