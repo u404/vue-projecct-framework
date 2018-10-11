@@ -1,0 +1,158 @@
+//视图尺寸定义
+$width-design-m: 750;
+$width-pc-min: 1000;
+//字体大小定义
+$font-default: 12px;
+$font-s: 12px;
+$font-h1: 40px;
+$font-h2: 30px;
+$font-h3: 22px;
+$font-h4: 18px;
+$font-h5: 16px;
+$font-h6: 14px;
+//颜色定义，$color-xxx定义前景色
+$color-empty: #eff4fb;
+$color-border: #dddddd;
+$color-input-border: #bfbfbf;
+$color-input-border-dark: #aaaaaa;
+$color-input-hover: #cfe0ff;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-default: #333333;
+$color-active-lighter: #a5cdfb;
+$color-active-light: #5386d9;
+$color-active: #3072e5;
+$color-active-dark: #25539d;
+$color-disabled: #999;
+$color-disabled-light: #f6f6f6;
+$color-bg-light: #f8f8f8;
+$color-bg-light-2: #f5f5f5;
+$color-bg-light-3: #f2f2f2;
+$color-bg-table-hover: #fff8df;
+$color-warning-text: #fa763c;
+$color-warning: #ff6633;
+$color-error: #fe0000;
+$color-error-2: #f30000;
+$color-success: green;
+$color-tips-bg: #5b5b5b;
+$color-table-bg: $color-white;
+$color-table-bg-1: #f5f5f5;
+$color-table-bg-2: #d7e4ff;
+$color-table-bg-3: #9ab7ea;
+$color-table-bg-warning: #fff8ac;
+//边框、线条定义
+$border-default: 1px solid $color-border;
+//边距尺寸定义
+$margin-default: 12px;
+$margin-s: 8px;
+@mixin mobile() {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin mobile-xs() {
+  @media screen and (max-width: 359px) {
+    @content;
+  }
+}
+
+@mixin flex($flow: row nowrap, $jus: space-between, $ali: center) {
+  display: flex;
+  flex-flow: $flow;
+  justify-content: $jus;
+  align-items: $ali;
+}
+
+@mixin text-overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@mixin clearfix-after {
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+@mixin content {
+  .content {
+    @content;
+  }
+}
+
+@mixin btn-size($width: auto, $height: auto, $font-size: 12px) {
+  width: $width;
+  height: $height;
+  font-size: $font-size;
+  border-radius: $height;
+}
+
+@mixin btn($width: auto, $height: auto, $font-size: 12px) {
+  @include flex($jus: center);
+  @include btn-size($width, $height, $font-size);
+  line-height: 1;
+  background: $color-active;
+  color: $color-white;
+  border: none;
+  font-size: $font-size;
+  cursor: pointer;
+  &:hover,
+  &:active {
+    background: $color-active-light;
+  }
+  &.base-line-btn {
+    background: $color-white;
+    border: 1px solid $color-active;
+    color: $color-active;
+    &:hover,
+    &:active {
+      background: $color-white;
+      border-color: $color-active-light;
+      color: $color-active-light;
+    }
+  }
+}
+
+@mixin upload-btn {
+  position: relative;
+  overflow: hidden;
+  input[type="file"] {
+    position: absolute;
+    left: -100%;
+    top: -100%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+@mixin auto-scroll {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    position: absolute;
+    top: 10px;
+    padding-top: 20px;
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    background-color: $color-input-border;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    /*border-radius: 10px;*/
+    // background: #EDEDED;
+  }
+}
+
+@function get-rem-size($px) {
+  @return $px/100 + "rem";
+}

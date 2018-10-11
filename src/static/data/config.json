@@ -1,0 +1,8 @@
+{
+  "configName1": "value1",
+  "configName2": [1, 2, 4],
+  "configName3": {
+    "c1": "1",
+    "c2": "2"
+  }
+}
