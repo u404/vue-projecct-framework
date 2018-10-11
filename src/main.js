@@ -3,6 +3,7 @@
 import 'babel-polyfill'
 import Vue from 'vue'
 import './assets/scripts/utils'
+import './assets/scripts/mobile'
 import store from './store'
 import App from './App'
 import router from './router'
