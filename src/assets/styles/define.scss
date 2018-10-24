@@ -102,17 +102,10 @@ $margin-s: 8px;
   cursor: pointer;
   &:hover,
   &:active {
-    background: $color-active-light;
   }
   &.base-line-btn {
-    background: $color-white;
-    border: 1px solid $color-active;
-    color: $color-active;
     &:hover,
     &:active {
-      background: $color-white;
-      border-color: $color-active-light;
-      color: $color-active-light;
     }
   }
 }

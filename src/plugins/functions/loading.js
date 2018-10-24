@@ -12,15 +12,13 @@ export default function (Vue) {
   var _loading = null
 
   const base = function (options) {
-    var opts = {
-      ...base.defaults,
-      ...options
-    }
+    // var opts = {
+    //   ...base.defaults,
+    //   ...options
+    // }
     if (!_loading) {
       _loading = initInstance(LoadingConstructor)
     }
-    _loading.title = opts.title
-    _loading.msg = opts.msg
     document.body.appendChild(_loading.$el)
 
     Vue.nextTick(() => {
@@ -28,8 +26,6 @@ export default function (Vue) {
     })
   }
   base.defaults = {
-    title: '',
-    msg: ''
   }
   base.close = function () {
     _loading.close()

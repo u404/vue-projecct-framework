@@ -6,7 +6,9 @@
     <transition name="scale" appear>
       <div class="dialog-main" v-show="visible">
         <div class="dialog-header">
-          <div class="dialog-title">{{title}}</div>
+          <slot name="header">
+            {{title}}
+          </slot>
           <div class="dialog-close" v-if="x" @click="triggerClose"></div>
         </div>
         <div class="dialog-body">

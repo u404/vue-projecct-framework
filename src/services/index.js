@@ -1,9 +1,11 @@
-import ajax from './ajaxBase'
+import phpService from './phpService'
+import javaService from './javaService'
 import user from './user'
-import manage from './manage'
+import redPacket from './redPacket'
 
 export default {
-  ajax,
+  phpService,
+  javaService,
   user,
-  manage
+  redPacket
 }

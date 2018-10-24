@@ -1,8 +1,8 @@
 // import jsFileDownload from 'js-file-download'
-import ajaxBase from './ajaxBase'
+import javaService from './javaService'
 
 const get = id => {
-  return ajaxBase.get('/xxx/xxx', {
+  return javaService.get('/xxx/xxx', {
     params: {
       id: id
     }
@@ -10,13 +10,13 @@ const get = id => {
 }
 
 const post = data => {
-  return ajaxBase.post('/xxxx/xxxx', data)
+  return javaService.post('/xxxx/xxxx', data)
 }
 /**
  * data 为formdata
  */
 const upload = (params, data) => {
-  return ajaxBase.request({
+  return javaService.request({
     method: 'post',
     url: '/xxxx/xxxxx',
     data: data,

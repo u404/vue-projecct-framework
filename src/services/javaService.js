@@ -1,4 +1,5 @@
 import qs from 'qs'
+import utils from '../assets/scripts/utils'
 import axios from 'axios'
 // import router from '@/router'
 import config from '@/version-config'
@@ -19,6 +20,7 @@ const ajaxBase = axios.create({
   responseType: 'json',
   transformRequest: [
     function (data, headers) {
+      headers['X-Request-Id'] = utils.uuid(32)
       // 如果需要转换数据
       return qs.stringify(data, {
         // arrayFormat: 'brackets'
@@ -27,7 +29,7 @@ const ajaxBase = axios.create({
   ],
   headers: {
     // 请求头设置
-    'X-Requested-With': 'XMLHttpRequest'
+    // 'X-Requested-With': 'XMLHttpRequest'
   },
 
   paramsSerializer: function (params) {
@@ -37,7 +39,7 @@ const ajaxBase = axios.create({
     })
   },
 
-  // timeout: 3000, // 超时时间
+  timeout: 3000, // 超时时间
   withCredentials: false, // 跨域设置
 
   auth: {
@@ -59,22 +61,15 @@ const ajaxBase = axios.create({
 // })
 
 // 响应拦截器
-// ajaxBase.interceptors.response.use(function (response) {
-//   console.log(response)
-//   if (response.data instanceof Blob || +response.data.code === 200 || +response.data.code === 304) {
-//     return Promise.resolve(response.data)
-//   } else {
-//     if (+response.data.code === 1001 || +response.data.code === 1003) { // token不合法
-//       router.push('/Login/back')
-//     }
-//     return Promise.reject(response.data)
-//   }
-// }, function (error) {
-//   console.log(error)
-//   if (error.response.status >= 400 && error.response.status < 404) {
-//     router.push('/Login/back')
-//   }
-//   return Promise.reject(error)
-// })
+ajaxBase.interceptors.response.use(function (response) {
+  if (response.data instanceof Blob || +response.data.code === 0) {
+    return Promise.resolve(response.data)
+  } else {
+    return Promise.reject(response.data)
+  }
+}, function (error) {
+  console.log(error)
+  return Promise.reject(error)
+})
 
 export default ajaxBase

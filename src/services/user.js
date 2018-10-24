@@ -1,27 +1,44 @@
-import ajaxBase from './ajaxBase'
+// import utils from '../assets/scripts/utils'
+import { redirect, jsonp } from './phpService'
 
-const login = (data) => {
-  return ajaxBase.post('/user/login', data)
+const wxLogin = (returnUrl) => {
+  let url = returnUrl || location.href
+  redirect('/ShareFilm/login?url=' + url)
 }
 
-const logout = (data) => {
-  return ajaxBase.get('/user/logout', {
-    params: data
+const bindPhone = (data) => {
+  return jsonp('/Coupon/bindMobile', data)
+}
+
+const getVerifImg = () => {
+  return jsonp('/ShareFilm/verifCode')
+}
+
+const sendSMSCode = (data) => {
+  return jsonp('/Coupon/sendCode', data)
+}
+
+const getSendSMSTimes = (data) => {
+  return jsonp('/v2/ShareFilm/checkMobileNum', data)
+}
+
+const getBindingState = (data) => {
+  return jsonp('/v2/ShareFilm/checkBindMobile', data)
+}
+
+const getJSSDKConfig = () => {
+  return jsonp('/ShareFilm/getJssdkConf', {
+    url: location.href
   })
-}
-const status = (data) => {
-  return ajaxBase.get('/user/status', {
-    params: data
-  })
-}
-
-const setDefaultAjaxParams = (data) => {
-  ajaxBase.defaults.params = data
 }
 
 export default {
-  login,
-  logout,
-  status,
-  setDefaultAjaxParams
+  wxLogin,
+  bindPhone,
+  getVerifImg,
+  sendSMSCode,
+  getSendSMSTimes,
+  getBindingState,
+
+  getJSSDKConfig
 }

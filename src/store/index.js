@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
+import redPacket from './redPacket'
 Vue.use(Vuex)
 
 const state = {
@@ -20,7 +21,8 @@ const actions = {
 }
 
 const modules = {
-  user
+  user,
+  redPacket
 }
 
 export default new Vuex.Store({
