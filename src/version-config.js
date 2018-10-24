@@ -3,10 +3,10 @@
  */
 
 const getJavaUrl = (suffix) => {
-  return `https://gateway${suffix}.smartcinema.com.cn`
+  return `http://localhost:8080`
 }
 const getPhpUrl = (suffix) => {
-  return `https://scmsapi${suffix}.smartcinema.com.cn`
+  return `http://localhost:8080`
 }
 
 const versionConfig = {

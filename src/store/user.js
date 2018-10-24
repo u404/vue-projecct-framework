@@ -1,4 +1,4 @@
-import services from '../services'
+// import services from '../services'
 const state = {
   code: '',
   openid: '',
@@ -20,26 +20,7 @@ const mutations = {
 
 const actions = {
   loadUserInfo ({state, commit}, data) {
-    if (state.phone) {
-      return Promise.resolve()
-    }
-    if (data.isWeixin) {
-      return services.user.getBindingState({code: state.code}).then(res => {
-        commit('userUpdate', {
-          openid: res.data.openid,
-          phone: res.data.u_mobile
-        })
-        return Promise.resolve()
-      }).catch(err => {
-        console.log('getBindingStateError', err)
-        if (+err.code === 300000402) { // 用户未绑定手机
-          return Promise.resolve()
-        }
-        return Promise.reject(err) // 300000300 参数错误，300000401 获取信息失败
-      })
-    } else {
-      return Promise.resolve()
-    }
+    return Promise.resolve()
   }
 }
 

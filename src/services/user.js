@@ -3,33 +3,31 @@ import { redirect, jsonp } from './phpService'
 
 const wxLogin = (returnUrl) => {
   let url = returnUrl || location.href
-  redirect('/ShareFilm/login?url=' + url)
+  redirect('/login?url=' + url)
 }
 
 const bindPhone = (data) => {
-  return jsonp('/Coupon/bindMobile', data)
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const getVerifImg = () => {
-  return jsonp('/ShareFilm/verifCode')
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const sendSMSCode = (data) => {
-  return jsonp('/Coupon/sendCode', data)
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const getSendSMSTimes = (data) => {
-  return jsonp('/v2/ShareFilm/checkMobileNum', data)
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const getBindingState = (data) => {
-  return jsonp('/v2/ShareFilm/checkBindMobile', data)
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const getJSSDKConfig = () => {
-  return jsonp('/ShareFilm/getJssdkConf', {
-    url: location.href
-  })
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 export default {

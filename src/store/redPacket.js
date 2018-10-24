@@ -21,28 +21,15 @@ const mutations = {
 
 const actions = {
   loadCouponInfo ({state, commit, rootState}, data) {
-    if (state.coupon && state.coupon.couponCode === state.couponCode) {
-      return Promise.resolve()
-    }
     return services.redPacket.getCouponDetails({
-      couponCode: state.couponCode,
-      openId: rootState.user.openid || undefined
+      couponCode: state.couponCode
     }).then(res1 => {
+      console.log(res1.data)
       let coupon = res1.data
-      if (!data.isWeixin) {
-        let couponRecord = services.redPacket.getLocalCouponRecord({couponCode: state.couponCode})
-        if (couponRecord) {
-          coupon.isReceive = 1
-          commit('userUpdate', {
-            phone: couponRecord.phone
-          })
-        }
-      }
       commit('couponUpdate', { ...coupon, couponCode: state.couponCode })
       return Promise.resolve()
     }).catch(err => {
       console.log(err)
-      // return Promise.resolve() // 测试使用数据
       return Promise.reject(err)
     })
   }

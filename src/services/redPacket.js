@@ -11,27 +11,21 @@ const getCouponDetails = (params) => {
 
 // 直接通过code领票
 const recieveCoupon = (data) => {
-  return jsonp('/Coupon/submit', data)
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 // 直接通过手机号和验证码领票
 const recieveCouponByPhone = (data) => {
-  if (data.code) {
-    data.type = 1
-    return jsonp('/Coupon/bindMobile', data)
-  } else {
-    data.type = 2
-    return jsonp('/Coupon/otherSubmit', data)
-  }
+  return Promise.reject({code: 0, msg: '未绑定接口'})
 }
 
 const setLocalCouponRecord = (data) => {
-  let couponRecords = utils.localStorage.get('couponRecords') || {}
+  let couponRecords = utils.localStorage.get('testData') || {}
   couponRecords[data.couponCode] = data
-  utils.localStorage.set('couponRecords', couponRecords)
+  utils.localStorage.set('testData', couponRecords)
 }
 const getLocalCouponRecord = (data) => {
-  let couponRecords = utils.localStorage.get('couponRecords') || {}
+  let couponRecords = utils.localStorage.get('testData') || {}
   return couponRecords[data.couponCode]
 }
 

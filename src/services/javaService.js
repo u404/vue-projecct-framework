@@ -45,8 +45,8 @@ const ajaxBase = axios.create({
   auth: {
     // 基础验证
   },
-  onUploadProgress: function (progressEvent) {},
-  onDownloadProgress: function (progressEvent) {},
+  // onUploadProgress: function (progressEvent) {},  // 这里会导致mock.js报错
+  // onDownloadProgress: function (progressEvent) {}, // 这里会导致mock.js报错
   validateStatus: function (status) {
     // 验证状态码委托，对于返回true或undefined，结果会resolved，否则，结果会rejected
     return status >= 200 && status < 300 // 默认的验证规则
