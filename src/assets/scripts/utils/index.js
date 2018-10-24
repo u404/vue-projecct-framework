@@ -103,21 +103,39 @@ utils.urlParam = function (search, hash) {
   }
 }
 
-utils.jsonp = function (url, callback, charset) {
-  var script = document.createElement('script')
-  script.src = url
-  charset && (script.charset = charset)
-  script.onload = function () {
-    this.onload = this.onerror = null
-    this.parentNode.removeChild(this)
-    callback && callback.call(this, true)
-  }
-  script.onerror = function () {
-    this.onload = this.onerror = null
-    this.parentNode.removeChild(this)
-    callback && callback.call(this, false)
-  }
-  document.head.appendChild(script)
+utils.jsonp = function (url, charset, callbackKeyName = 'callback') {
+  if (!window) return new Error('禁止非浏览器环境下使用jsonp')
+
+  return new Promise((resolve, reject) => {
+    let i = 0
+    while (window[`__jsonpCallback${i}__`]) {
+      i++
+    }
+    window[`__jsonpCallback${i}__`] = (data) => {
+      console.log(url, data)
+      resolve(data)
+      window[`__jsonpCallback${i}__`] = null // 将执行完的callback清理掉
+    }
+    // 此处url的处理方案不太完善，追加&callback=xxx的位置有可能会在#xxx之后
+    url += (/[^#]+\?/.test(url) ? '&' : '?') + callbackKeyName + `=__jsonpCallback${i}__`
+    var script = document.createElement('script')
+    script.src = url
+    charset && (script.charset = charset)
+    script.onload = function () {
+      this.onload = this.onerror = null
+      this.parentNode.removeChild(this)
+      // callback && callback.call(this, true)
+    }
+    script.onerror = function (err) {
+      this.onload = this.onerror = null
+      this.parentNode.removeChild(this)
+      // callback && callback.call(this, false)
+      console.log('jsonp', err)
+
+      reject(new Error('请求出错'))
+    }
+    document.head.appendChild(script)
+  })
 }
 
 utils.client = {
@@ -175,6 +193,36 @@ utils.throttle = function (func, delay) {
     setTimer()
     func.apply(this, arguments)
   }
+}
+
+utils.uuid = function (len, radix) {
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+  var uuid = []
+  var i
+  radix = radix || chars.length
+
+  if (len) {
+    // Compact form
+    for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix]
+  } else {
+    // rfc4122, version 4 form
+    var r
+
+    // rfc4122 requires these characters
+    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
+    uuid[14] = '4'
+
+    // Fill in random data.  At i==19 set the high bits of clock sequence as
+    // per rfc4122, sec. 4.1.5
+    for (i = 0; i < 36; i++) {
+      if (!uuid[i]) {
+        r = 0 | Math.random() * 16
+        uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r]
+      }
+    }
+  }
+
+  return uuid.join('')
 }
 
 export default utils

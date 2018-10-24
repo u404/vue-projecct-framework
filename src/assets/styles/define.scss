@@ -153,6 +153,6 @@ $margin-s: 8px;
   }
 }
 
-@function get-rem-size($px) {
-  @return $px/100 + "rem";
+@function rem($px) {
+  @return $px/100 + rem;
 }

@@ -26,3 +26,8 @@ Date.prototype.format = function (fmt) {
 Number.prototype.formatCurrency = function() {
   return String(this).replace(/(\d{1,3})(?=(\d{3})+(?:\.|$))+(?:\.\d+)?/g, '$1,')
 }
+
+
+String.prototype.trim = function() {
+return this.replace(/^\s*(\.*?)\s*$/, '$1')
+}
