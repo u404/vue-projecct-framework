@@ -13,6 +13,7 @@ const versionConfig = {
   '': {
     javaHost: getJavaUrl('-dev'),
     phpHost: getPhpUrl('dev'),
+    mockdata: true,
     wxDebug: true,
     wxApiDisabled: true,
     localData: {
