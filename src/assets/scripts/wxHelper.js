@@ -20,7 +20,7 @@ const error = (callback) => {
 }
 
 const onShare = (options) => {
-  if(!wx) return
+  if (!wx) return
   const defaults = {
     title: '', // 分享标题
     desc: '', // 分享描述
@@ -47,20 +47,43 @@ const onShare = (options) => {
   wx.onMenuShareQZone({...opts}) // QQ空间
 }
 
+const closeWindow = () => {
+  wx && wx.closeWindow && wx.closeWindow()
+  wx && WeixinJSBridge.invoke('closeWindow', {}, function (res) {
+  })
+}
+
+const closeOnBack = (on = true) => {
+  if(!wx) return
+  if (on) {
+    var state = {
+      title: 'forward',
+      url: '#forward'
+    }
+    window.history.pushState(state, state.title, state.url)
+
+    window.onpopstate = function () {
+      closeWindow()
+    }
+  } else {
+    window.onpopstate = null
+  }
+}
+
 const shareForbid = () => {
-  function onBridgeReady() {
-      WeixinJSBridge.call('hideOptionMenu');
+  function onBridgeReady () {
+    WeixinJSBridge.call('hideOptionMenu')
   }
 
-  if (typeof WeixinJSBridge == "undefined") {
-      if (document.addEventListener) {
-          document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-      } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-          document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-      }
+  if (typeof WeixinJSBridge === 'undefined') {
+    if (document.addEventListener) {
+      document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
+    } else if (document.attachEvent) {
+      document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
+      document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
+    }
   } else {
-      onBridgeReady();
+    onBridgeReady()
   }
 }
 
@@ -69,5 +92,7 @@ export default {
   ready,
   error,
   onShare,
-  shareForbid
+  shareForbid,
+  closeOnBack,
+  closeWindow
 }
