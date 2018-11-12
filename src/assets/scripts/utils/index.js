@@ -32,10 +32,16 @@ utils.cookie = {
     document.cookie = `${key}=${val};expires=${expires};domain=${domain};path=${path}`
   },
   get (key) {
+    console.log(document.cookie)
     let reg = new RegExp('(^| )' + key + '=([^;]*)(;|$)')
     let arr = document.cookie.match(reg)
+    console.log('cookieMatch', key, reg, arr)
     if (arr) {
-      return JSON.parse(unescape(arr[2]) || null)
+      try {
+        return JSON.parse(unescape(arr[2]) || null)
+      } catch (e) {
+        return unescape(arr[2])
+      }
     } else {
       return null
     }
@@ -66,13 +72,21 @@ utils.cookieSafe = {
     let reg = new RegExp('(^| )' + key + '=([^;]*)(;|$)')
     let arr = document.cookie.match(reg)
     if (arr) {
-      return JSON.parse(unescape(arr[2]) || null)
+      try {
+        return JSON.parse(unescape(arr[2]) || null)
+      } catch (e) {
+        return unescape(arr[2])
+      }
     } else {
       return null
     }
   },
   get (key) {
-    return this.__get(key).value
+    let cookie = this.__get(key)
+    if (cookie && typeof cookie === 'string') {
+      return cookie
+    }
+    return (cookie && cookie.value) || null
   },
   remove (key) {
     var cookie = this.__get(key)
@@ -112,7 +126,7 @@ utils.jsonp = function (url, charset, callbackKeyName = 'callback') {
       i++
     }
     window[`__jsonpCallback${i}__`] = (data) => {
-      console.log(url, data)
+      console.log(url, data)   // eslint-disable-line
       resolve(data)
       window[`__jsonpCallback${i}__`] = null // 将执行完的callback清理掉
     }
@@ -130,7 +144,7 @@ utils.jsonp = function (url, charset, callbackKeyName = 'callback') {
       this.onload = this.onerror = null
       this.parentNode.removeChild(this)
       // callback && callback.call(this, false)
-      console.log('jsonp', err)
+      console.log("jsonp", err)   // eslint-disable-line
 
       reject(new Error('请求出错'))
     }
@@ -171,13 +185,11 @@ utils.throttle = function (func, delay) {
   var lastDelay = null
   var setTimer = function () {
     if (nextDelay) {
-      console.log(nextDelay)
       timerStartTime = new Date()
       timer = setTimeout(setTimer, nextDelay)
       lastDelay = nextDelay
       nextDelay = null
     } else {
-      console.log('clear')
       nextDelay = delay
       timer && (timer = clearTimeout(timer))
       timerStartTime = null // 这句无所谓
@@ -187,7 +199,6 @@ utils.throttle = function (func, delay) {
   return function () {
     if (timer) {
       nextDelay = delay - (timerStartTime - new Date() + lastDelay)
-      console.log(delay)
       return
     }
     setTimer()
@@ -223,6 +234,34 @@ utils.uuid = function (len, radix) {
   }
 
   return uuid.join('')
+}
+
+utils.countdown = function (options) {
+  let opts = {
+    total: 60000,
+    timespan: 1000,
+    appear: true,
+    timechange: function () {},
+    ended: function () {},
+    ...options
+  }
+  let leave = 0
+  const once = () => {
+    let remain = opts.total - leave
+    opts.timechange({ remain, leave, total: opts.total })
+    if (remain <= 0) {
+      opts.ended({ remain, leave, total: opts.total })
+      timer && clearInterval(timer)
+      timer = null
+    }
+  }
+  let timer = setInterval(() => {
+    leave += opts.timespan
+    once()
+  }, opts.timespan)
+  if (opts.appear) {
+    once()
+  }
 }
 
 export default utils

@@ -87,6 +87,11 @@ const shareForbid = () => {
   }
 }
 
+const hideMenu = ()=> {
+  if(!wx) return
+  wx.hideOptionMenu()
+}
+
 export default {
   config,
   ready,
@@ -94,5 +99,6 @@ export default {
   onShare,
   shareForbid,
   closeOnBack,
-  closeWindow
+  closeWindow,
+  hideMenu
 }
